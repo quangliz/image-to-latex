@@ -1,0 +1,6 @@
+.venv
+checkpoints
+wandb
+data
+logs
+outputs
