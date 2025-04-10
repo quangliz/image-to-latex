@@ -24,3 +24,6 @@ python main.py train
 ```
 python main.py infer --image <path_to_image> --checkpoint <path_to_checkpoint>
 ```
+
+### or
+- use the notebook with instructions
