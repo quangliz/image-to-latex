@@ -15,6 +15,9 @@ PROJECT_DIRNAME = Path(__file__).resolve().parent
 sys.path.insert(0, str(PROJECT_DIRNAME))
 
 def main():
+    # Import Path here to ensure it's available in the function scope
+    from pathlib import Path
+
     parser = argparse.ArgumentParser(description="Image-to-LaTeX CLI")
     subparsers = parser.add_subparsers(dest="command", help="Command to run")
 
@@ -107,7 +110,7 @@ def main():
     elif args.command == "infer":
         import torch
         import numpy as np
-        from PIL import Image
+        from pathlib import Path
         from albumentations.pytorch.transforms import ToTensorV2
         from model.lit_resnet_transformer import LitResNetTransformer
 
@@ -134,9 +137,19 @@ def main():
             model = model.to(device)  # Move model to the appropriate device
             transform = ToTensorV2()
 
-            # Load and preprocess the image
-            image = Image.open(args.image).convert("L")
-            image_tensor = transform(image=np.array(image))["image"]
+            # Import crop function from utils
+            from scripts.utils import crop
+
+            # Load and preprocess the image using the same crop function as for training data
+            image_path = Path(args.image)
+            processed_image = crop(image_path, padding=8)
+
+            if processed_image is None:
+                print(f"Error: Could not process image '{args.image}'. It may not contain any text.")
+                sys.exit(1)
+
+            # Convert to tensor
+            image_tensor = transform(image=np.array(processed_image))["image"]
             image_tensor = image_tensor.unsqueeze(0).float().to(device)  # Move input to the same device
 
             # Run inference
@@ -148,7 +161,7 @@ def main():
                 decoded = model.tokenizer.decode(pred.tolist())
                 decoded_str = " ".join(decoded)
 
-            print(f"LaTeX code: {decoded_str.replace(' ', '')}")
+            print(f"LaTeX code: {decoded_str}")
         except Exception as e:
             print(f"Error during inference: {e}")
             sys.exit(1)
