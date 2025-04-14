@@ -74,7 +74,7 @@ python main.py infer --image <path_to_image> --checkpoint <path_to_checkpoint>
 
 ## Dataset
 
-This model was trained on the [Im2Latex-100K dataset](https://www.kaggle.com/datasets/shahrukhkhan/im2latex100k), which contains:
+This model was trained on the [Im2Latex-100K dataset](https://im2markup.yuntiandeng.com/data/), which contains:
 - 103,556 images of mathematical formulas
 - Corresponding LaTeX code for each image
 - Train/validation/test splits
