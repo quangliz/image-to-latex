@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image to LaTeX Converter</title>
+    <!-- MathJax for rendering LaTeX -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .container {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="file"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            display: none;
+        }
+        .rendered-latex {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f0f8ff;
+            display: none;
+            font-size: 18px;
+        }
+        .copy-btn {
+            background-color: #4a90e2;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        .copy-btn:hover {
+            background-color: #357ae8;
+        }
+        .preview {
+            margin-top: 20px;
+            text-align: center;
+        }
+        #preview-image {
+            max-width: 100%;
+            max-height: 300px;
+            border: 1px solid #ddd;
+            display: none;
+        }
+        .loading {
+            text-align: center;
+            display: none;
+        }
+        .error {
+            color: red;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Image to LaTeX Converter</h1>
+
+    <div class="container">
+        <div class="form-group">
+            <label for="image-upload">Upload an image of a mathematical formula:</label>
+            <input type="file" id="image-upload" accept="image/*">
+        </div>
+
+        <div class="preview">
+            <img id="preview-image" alt="Preview">
+        </div>
+
+        <button id="convert-btn">Convert to LaTeX</button>
+
+        <div class="loading" id="loading">
+            <p>Converting... Please wait.</p>
+        </div>
+
+        <div class="error" id="error-message"></div>
+
+        <div class="result" id="result-container">
+            <h3>LaTeX Code:</h3>
+            <pre id="latex-result"></pre>
+            <button id="copy-btn" class="copy-btn">Copy to Clipboard</button>
+        </div>
+
+        <div class="rendered-latex" id="rendered-container">
+            <h3>Rendered LaTeX:</h3>
+            <div id="rendered-latex"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const imageUpload = document.getElementById('image-upload');
+            const previewImage = document.getElementById('preview-image');
+            const convertBtn = document.getElementById('convert-btn');
+            const resultContainer = document.getElementById('result-container');
+            const latexResult = document.getElementById('latex-result');
+            const renderedContainer = document.getElementById('rendered-container');
+            const renderedLatex = document.getElementById('rendered-latex');
+            const copyBtn = document.getElementById('copy-btn');
+            const loading = document.getElementById('loading');
+            const errorMessage = document.getElementById('error-message');
+
+            // Preview image when selected
+            imageUpload.addEventListener('change', function() {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        previewImage.src = e.target.result;
+                        previewImage.style.display = 'block';
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Convert image to LaTeX
+            convertBtn.addEventListener('click', function() {
+                const file = imageUpload.files[0];
+                if (!file) {
+                    showError('Please select an image first.');
+                    return;
+                }
+
+                // Hide previous results and errors
+                resultContainer.style.display = 'none';
+                errorMessage.style.display = 'none';
+
+                // Show loading indicator
+                loading.style.display = 'block';
+
+                const formData = new FormData();
+                formData.append('file', file);
+
+                fetch('/predict', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Server error: ' + response.status);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Hide loading indicator
+                    loading.style.display = 'none';
+
+                    // Show raw LaTeX result
+                    latexResult.textContent = data.latex;
+                    resultContainer.style.display = 'block';
+
+                    // Show rendered LaTeX
+                    renderedLatex.innerHTML = '$$' + data.latex + '$$';
+                    renderedContainer.style.display = 'block';
+
+                    // Render the LaTeX with MathJax
+                    if (window.MathJax) {
+                        MathJax.typesetPromise([renderedLatex]).catch(function (err) {
+                            console.log('Error rendering LaTeX:', err);
+                        });
+                    }
+                })
+                .catch(error => {
+                    // Hide loading indicator
+                    loading.style.display = 'none';
+
+                    // Show error message
+                    showError('Error: ' + error.message);
+                });
+            });
+
+            // Copy LaTeX to clipboard
+            copyBtn.addEventListener('click', function() {
+                navigator.clipboard.writeText(latexResult.textContent)
+                    .then(() => {
+                        const originalText = copyBtn.textContent;
+                        copyBtn.textContent = 'Copied!';
+                        setTimeout(() => {
+                            copyBtn.textContent = originalText;
+                        }, 2000);
+                    })
+                    .catch(err => {
+                        console.error('Failed to copy: ', err);
+                    });
+            });
+
+            function showError(message) {
+                errorMessage.textContent = message;
+                errorMessage.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
