@@ -25,21 +25,13 @@ After training for 15 epochs, the model achieved the following metrics:
 
 ### Training Progress
 
-#### Loss
-![Training Loss](assess/train_loss_epoch.png)
-![Validation Loss](assess/val_loss_epoch.png)
+| Training | Validation |
+|---------------|-----------------|
+| ![Training Loss](assess/train_loss_epoch.png) | ![Validation Loss](assess/val_loss_epoch.png) |
+| ![Training BLEU](assess/train_bleu.png) | ![Validation BLEU](assess/val_bleu.png) |
+| ![Training Edit Distance](assess/train_edit_distance.png) | ![Validation Edit Distance](assess/val_edit_distance.png) |
+| ![Training Exact Match](assess/train_exact_math.png) | ![Validation Exact Match](assess/val_exact_math.png) |
 
-#### BLEU Score
-![Training BLEU](assess/train_bleu.png)
-![Validation BLEU](assess/val_bleu.png)
-
-#### Edit Distance
-![Training Edit Distance](assess/train_edit_distance.png)
-![Validation Edit Distance](assess/val_edit_distance.png)
-
-#### Exact Match
-![Training Exact Match](assess/train_exact_math.png)
-![Validation Exact Match](assess/val_exact_math.png)
 
 ## Usage
 - Clone the repository:
@@ -86,7 +78,7 @@ This model was trained on the [Im2Latex-100K dataset](https://im2markup.yuntiand
 - **Decoder**: Transformer with 2 layers, 2 attention heads
 - **Optimizer**: AdamW with learning rate 0.001
 - **Scheduler**: MultiStepLR with milestones at epoch 10
-- **Training Time**: Approximately 3 hours on a single NVIDIA GPU
+- **Training Time**: Approximately 3 hours on a single NVIDIA GTX 1650 GPU
 
 ## Use api
 ```
