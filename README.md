@@ -88,9 +88,14 @@ This model was trained on the [Im2Latex-100K dataset](https://im2markup.yuntiand
 - **Scheduler**: MultiStepLR with milestones at epoch 10
 - **Training Time**: Approximately 3 hours on a single NVIDIA GPU
 
+## Use api
+```
+cd api
+uvicorn api.main:app --reload
+```
 ## Future Improvements
 
-- Implement data augmentation for better generalization
-- Experiment with different backbone architectures
-- Add support for handwritten mathematical formulas
-- Implement beam search for better inference
+- [ ] Experiment with different backbone architectures
+- [ ] Add support for handwritten mathematical formulas
+- [ ] Implement beam search for better inference
+- [x] Build API
