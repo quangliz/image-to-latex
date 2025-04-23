@@ -1,6 +1,41 @@
-.venv
-checkpoints
-wandb
-data
-logs
-outputs
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Model checkpoints and large files
+checkpoints/
+*.ckpt
+*.pt
+*.pth
+
+# Wandb logs
+wandb/
+
+# Data directories
+data/
+data2/
+tmp/
+logs/
+outputs/
+tests/
+
+# Cache files
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
