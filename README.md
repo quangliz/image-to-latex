@@ -91,3 +91,5 @@ uvicorn api.main:app --reload
 - [ ] Add support for handwritten mathematical formulas
 - [ ] Implement beam search for better inference
 - [x] Build API
+- [ ] Clean and refactor code
+- [ ] Document project
