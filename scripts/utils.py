@@ -85,7 +85,11 @@ class BaseDataset(Dataset):
 
 def pil_loader(fp: Path, mode: str) -> Image.Image:
     with open(fp, "rb") as f:
-        img = Image.open(f)
+        try:
+            img = Image.open(f)
+        except:
+            print(f"Error opening {fp}")
+            img = Image.fromarray(np.full((64, 128), 255, dtype=np.uint8))
         return img.convert(mode)
 
 
@@ -213,7 +217,7 @@ def get_split(
     formulas = []
     with open(filename) as f:
         for line in f:
-            img_name, formula_idx = line.strip("\n").split()
+            img_name, formula_idx = line.strip("\n").split(" ")
             image_names.append(img_name)
             formulas.append(all_formulas[int(formula_idx)])
     return image_names, formulas

@@ -1,6 +1,7 @@
 import json
 import random
 import tarfile
+import sys
 from pathlib import Path
 from typing import Callable, Dict, List, Optional, Tuple, Union
 from urllib.request import urlretrieve
@@ -17,8 +18,8 @@ from albumentations.pytorch.transforms import ToTensorV2
 
 from pytorch_lightning import LightningDataModule
 
-
 from scripts.utils import pil_loader, get_all_formulas, get_split
+from config import *
 
 class BaseDataset(Dataset):
     """A base Dataset class.
@@ -168,6 +169,7 @@ class Tokenizer:
         """
         with open(filename) as f:
             token_to_index = json.load(f)
+            # token_to_index = {k: int(v) for k, v in token_to_index.items()}
         return cls(token_to_index)
 
 
@@ -192,9 +194,9 @@ class Im2Latex(LightningDataModule):
         self.num_workers = num_workers
         self.pin_memory = pin_memory
 
-        self.data_dirname = Path(__file__).resolve().parents[1] / "data"
-        self.vocab_file = Path(__file__).resolve().parents[1] / "data" / "vocab.json"
-        formula_file = self.data_dirname / "im2latex_formulas.norm.new.lst"
+        self.data_dirname = DATA_DIRNAME
+        self.vocab_file = VOCAB_FILE
+        formula_file = CLEANED_FORMULA_FILE
         if not formula_file.is_file():
             raise FileNotFoundError("Did you run scripts/prepare_data.py?")
         self.all_formulas = get_all_formulas(formula_file)
@@ -225,7 +227,7 @@ class Im2Latex(LightningDataModule):
         if stage in ("fit", None):
             train_image_names, train_formulas = get_split(
                 self.all_formulas,
-                self.data_dirname / "im2latex_train_filter.lst",
+                TRAIN_FILTER_FILE,
             )
             self.train_dataset = BaseDataset(
                 self.processed_images_dirname,
@@ -236,7 +238,7 @@ class Im2Latex(LightningDataModule):
 
             val_image_names, val_formulas = get_split(
                 self.all_formulas,
-                self.data_dirname / "im2latex_validate_filter.lst",
+                VALIDATE_FILTER_FILE,
             )
             self.val_dataset = BaseDataset(
                 self.processed_images_dirname,
@@ -248,7 +250,7 @@ class Im2Latex(LightningDataModule):
         if stage in ("test", None):
             test_image_names, test_formulas = get_split(
                 self.all_formulas,
-                self.data_dirname / "im2latex_test_filter.lst",
+                TEST_FILTER_FILE,
             )
             self.test_dataset = BaseDataset(
                 self.processed_images_dirname,

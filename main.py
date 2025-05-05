@@ -10,9 +10,8 @@ import os
 from pathlib import Path
 import subprocess
 
-# Add the project root directory to the Python path
-PROJECT_DIRNAME = Path(__file__).resolve().parent
-sys.path.insert(0, str(PROJECT_DIRNAME))
+from config import DATA_DIRNAME, CLEANED_FORMULA_FILE, VOCAB_FILE
+
 
 def main():
     # Import Path here to ensure it's available in the function scope
@@ -41,13 +40,11 @@ def main():
     args = parser.parse_args()
 
     if args.command == "train":
+        print(DATA_DIRNAME, 
+              CLEANED_FORMULA_FILE, 
+              VOCAB_FILE)
         # Check if data files exist, if not run prepare_data.py
-        data_dir = Path("data")
-        data_dir.mkdir(exist_ok=True)
-        formula_file = data_dir / "im2latex_formulas.norm.new.lst"
-        vocab_file = data_dir / "vocab.json"
-
-        if not formula_file.is_file() or not vocab_file.is_file():
+        if not CLEANED_FORMULA_FILE.is_file() or not VOCAB_FILE.is_file():
             print("Data files not found. Running data preparation script...")
             prepare_cmd = [sys.executable, "scripts/prepare_data.py"]
             print(f"Running: {' '.join(prepare_cmd)}")

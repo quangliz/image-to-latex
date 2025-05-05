@@ -8,7 +8,7 @@ from pytorch_lightning import LightningModule
 from scripts.utils import Tokenizer
 from .resnet_transformer import ResNetTransformer
 from .metrics import CharacterErrorRate, ExactMatchScore, BLEUScore, EditDistance
-
+from config import VOCAB_FILE
 
 class LitResNetTransformer(LightningModule):
     def __init__(
@@ -35,7 +35,7 @@ class LitResNetTransformer(LightningModule):
         self.training_step_outputs = []
         self.validation_step_outputs = []
 
-        vocab_file = Path(__file__).resolve().parents[1] / "data" / "vocab.json"
+        vocab_file = VOCAB_FILE
         self.tokenizer = Tokenizer.load(vocab_file)
         self.model = ResNetTransformer(
             d_model=d_model,

@@ -1,4 +1,4 @@
-# Image to LaTeX Converter
+# Image to LaTeX
 
 A deep learning model that converts images of mathematical formulas into LaTeX code. This project uses a ResNet-Transformer architecture to accurately transcribe mathematical notation from images.
 
@@ -80,12 +80,12 @@ This model was trained on the [Im2Latex-100K dataset](https://im2markup.yuntiand
 - **Scheduler**: MultiStepLR with milestones at epoch 10
 - **Training Time**: Approximately 3 hours on a single NVIDIA GTX 1650 GPU
 
-## Use api
+## Use the API
 ```
 cd api
 uvicorn api.main:app --reload
 ```
-## Future Improvements
+## Future Works
 
 - [ ] Experiment with different backbone architectures
 - [ ] Add support for handwritten mathematical formulas

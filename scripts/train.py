@@ -18,6 +18,7 @@ from scripts.data import Im2Latex
 from model.lit_resnet_transformer import LitResNetTransformer
 from scripts.callbacks import MetricsCallback
 
+from config import PROJECT_DIRNAME
 
 @hydra.main(version_base=None, config_path="..", config_name="config")
 def main(cfg: DictConfig):
@@ -28,8 +29,7 @@ def main(cfg: DictConfig):
 
     # Ensure checkpoints are saved to the root 'checkpoints' directory
     # regardless of Hydra's working directory
-    project_root = Path(__file__).resolve().parents[1]
-    checkpoint_dir = project_root / "checkpoints"
+    checkpoint_dir = PROJECT_DIRNAME / "checkpoints"
     checkpoint_dir.mkdir(exist_ok=True)
 
     callbacks: List[Callback] = []
