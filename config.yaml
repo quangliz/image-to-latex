@@ -6,7 +6,7 @@ trainer:
   overfit_batches: 0.0
   check_val_every_n_epoch: 1
   fast_dev_run: false
-  max_epochs: 20
+  max_epochs: 15
   min_epochs: 1
   num_sanity_val_steps: 0
   enable_checkpointing: true
@@ -43,7 +43,7 @@ lit_model:
   # Model
   d_model: 128     #64
   dim_feedforward: 256 #128
-  nhead: 2
+  nhead: 4
   dropout: 0.3
   num_decoder_layers: 2
   max_output_len: 150
