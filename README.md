@@ -92,4 +92,4 @@ uvicorn api.main:app --reload
 - [ ] Implement beam search for better inference
 - [x] Build API
 - [ ] Clean and refactor code
-- [ ] Document project
+- [x] Document project
