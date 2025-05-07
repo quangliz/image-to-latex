@@ -67,23 +67,22 @@ python main.py infer --image <path_to_image> --checkpoint <path_to_checkpoint>
 ## Dataset
 
 This model was trained on the [Im2Latex-100K dataset](https://im2markup.yuntiandeng.com/data/), which contains:
-- 103,556 images of mathematical formulas
+- 100k+ images of mathematical formulas
 - Corresponding LaTeX code for each image
 - Train/validation/test splits
 
 ## Implementation Details
 
 - **Framework**: PyTorch and PyTorch Lightning
-- **Backbone**: ResNet-18 (pretrained on ImageNet)
-- **Decoder**: Transformer with 2 layers, 2 attention heads
-- **Optimizer**: AdamW with learning rate 0.001
-- **Scheduler**: MultiStepLR with milestones at epoch 10
-- **Training Time**: Approximately 3 hours on a single NVIDIA GTX 1650 GPU
+- **Backbone**: ResNet-18 with first 3 layers
+- **Decoder**: Transformer
+- **Optimizer**: AdamW 
+- **Scheduler**: MultiStepLR
 
 ## Use the API
 ```
 cd api
-uvicorn api.main:app --reload
+python3 main.py
 ```
 ## Future Works
 
