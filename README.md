@@ -92,3 +92,10 @@ python3 main.py
 - [x] Build API
 - [ ] Clean and refactor code
 - [x] Document project
+
+<div align="center">
+  
+## **Want to know more about the documentation? Check this out:**
+
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/quangliz/image-to-latex)
+</div>
