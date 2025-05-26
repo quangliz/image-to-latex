@@ -24,16 +24,18 @@ import logging
 from typing import Optional
 from contextlib import asynccontextmanager
 
+from config import BEST_CHECKPOINT
+
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Path to the checkpoint file
 project_root = Path(__file__).resolve().parents[1]
-BEST_CHECKPOINT = project_root / 'checkpoints' / 'latest.ckpt'
-if not BEST_CHECKPOINT.exists():
-    # Try alternative path
-    BEST_CHECKPOINT = project_root / 'checkpoints' / '100k' / 'epoch_epoch=13_valloss_val' / 'loss_epoch=0.21.ckpt'
+# BEST_CHECKPOINT = project_root / 'checkpoints' / 'latest.ckpt'
+# if not BEST_CHECKPOINT.exists():
+#     # Try alternative path
+#     BEST_CHECKPOINT = project_root / 'checkpoints' / '100k' / 'epoch_epoch=13_valloss_val' / 'loss_epoch=0.21.ckpt'
 
 # Check if checkpoint exists
 if not BEST_CHECKPOINT.exists():
