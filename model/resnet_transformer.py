@@ -41,7 +41,7 @@ class ResNetTransformer(nn.Module):
             resnet.layer2, # 3x3, stride 2, padding 1 -> (128, H/8, W/8)
             resnet.layer3, # 3x3, stride 2, padding 1 -> (256, H/16, W/16)
         )
-        self.bottleneck = nn.Conv2d(128, self.d_model, 1)
+        self.bottleneck = nn.Conv2d(256, self.d_model, 1)
         self.image_positional_encoder = PositionalEncoding2D(self.d_model)
 
         # Decoder
