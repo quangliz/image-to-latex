@@ -45,7 +45,7 @@ class ResNetTransformer(nn.Module):
         self.image_positional_encoder = PositionalEncoding2D(self.d_model)
 
         # Decoder
-        self.embedding = nn.Embedding(num_classes, self.d_model)
+        self.embedding = nn.Embedding(num_classes, self.d_model) # 
         self.y_mask = generate_square_subsequent_mask(self.max_output_len)
         self.word_positional_encoder = PositionalEncoding1D(self.d_model, max_len=self.max_output_len)
         transformer_decoder_layer = nn.TransformerDecoderLayer(self.d_model, nhead, dim_feedforward, dropout)
@@ -166,7 +166,7 @@ class ResNetTransformer(nn.Module):
         return output_indices
 
 
-def generate_square_subsequent_mask(size: int) -> Tensor:
+def generate_square_subsequent_mask(size: int) -> Tensor: # predict yourself
     """Generate a triangular (size, size) mask."""
     mask = (torch.triu(torch.ones(size, size)) == 1).transpose(0, 1)
     mask = mask.float().masked_fill(mask == 0, float("-inf")).masked_fill(mask == 1, float(0.0))

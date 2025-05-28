@@ -1,3 +1,7 @@
+### Tổng quan model
+Kiến trúc được tham khảo từ bài báo [Full Page Handwriting Recognition via Image to
+Sequence Extraction](https://arxiv.org/pdf/2103.06450)
+![Model Overview](../assess/model.png)
 ### Encoder: sử dụng kiến trúc của Resnet-18 với chút thay đổi
 - **Backbone**: Mô hình sử dụng backbone là Resnet-18, dừng lại ở block conv4_x(3x3, 256) giúp giữ lại cấu trúc không gian tốt cho bước mã hóa vị trí 2D mà vẫn mang đặc trưng đủ mạnh. Resnet-18 biến đổi ảnh đầu vào (B, C, H, W) thành feature map (B, 256, H/16, W/16), khi mà số chiều không gian giảm nhưng chiều sâu các kênh tăng, giúp học được nhiều đặc trưng hơn.
 - **Bottleneck**: Sau khi có feature map với 256 kênh, ta tối ưu số kênh bằng cách thêm 1 lớp bottleneck tích chập, giảm xuống còn $d_{model}$=128 kênh, giúp giảm số tham số và độ phức tạp tính toán trong khi vẫn giữ được các thông tin không gian.
