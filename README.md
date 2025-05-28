@@ -1,5 +1,14 @@
-# Image to LaTeX
 
+**Watch out AI-generated document at:**
+<div align="center">
+
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/quangliz/image-to-latex)
+
+</div>
+
+---
+
+# Image to LaTeX
 A deep learning model that converts images of mathematical formulas into LaTeX code. This project uses a ResNet-Transformer architecture to accurately transcribe mathematical notation from images.
 
 ## Architecture
@@ -94,8 +103,3 @@ python3 main.py
 - [x] Document project
 
 <div align="center">
-  
-## **Want to know more about the documentation? Check this out:**
-
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/quangliz/image-to-latex)
-</div>

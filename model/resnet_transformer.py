@@ -33,15 +33,15 @@ class ResNetTransformer(nn.Module):
         # Encoder
         resnet = torchvision.models.resnet18(weights=None)
         self.backbone = nn.Sequential(
-            resnet.conv1,
+            resnet.conv1, #7x7, stride 2, padding 3
             resnet.bn1,
             resnet.relu,
-            resnet.maxpool,
-            resnet.layer1, # 64
-            resnet.layer2, # 128
-            resnet.layer3, # 256
+            resnet.maxpool, # 3x3, stride 2, padding 1 -> (64, H/4, W/4)
+            resnet.layer1, # 3x3, stride 1, padding 1 -> (64, H/4, W/4)
+            resnet.layer2, # 3x3, stride 2, padding 1 -> (128, H/8, W/8)
+            resnet.layer3, # 3x3, stride 2, padding 1 -> (256, H/16, W/16)
         )
-        self.bottleneck = nn.Conv2d(256, self.d_model, 1)
+        self.bottleneck = nn.Conv2d(128, self.d_model, 1)
         self.image_positional_encoder = PositionalEncoding2D(self.d_model)
 
         # Decoder

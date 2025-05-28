@@ -1,6 +1,6 @@
 ### Encoder: sử dụng kiến trúc của Resnet-18 với chút thay đổi
-- **Backbone**: Mô hình sử dụng backbone là Resnet-18, dừng lại ở layer3(28x28 output) giúp giữ lại cấu trúc không gian tốt cho bước mã hóa vị trí 2D mà vẫn mang đặc trưng đủ mạnh. Resnet-18 biến đổi ảnh đầu vào (B, C, H, W) thành feature map (B, 256, H/32, W/32), khi mà số chiều không gian giảm nhưng chiều sâu các kênh tăng, giúp học được nhiều đặc trưng hơn.
-- **Bottleneck**: Sau khi có feature map với 256 kênh, ta tối ưu số kênh bằng cách thêm 1 lớp bottleneck tích chập, giảm xuống còn 128 kênh, giúp giảm số tham số và độ phức tạp tính toán trong khi vẫn giữ được các thông tin không gian.
+- **Backbone**: Mô hình sử dụng backbone là Resnet-18, dừng lại ở block conv4_x(3x3, 256) giúp giữ lại cấu trúc không gian tốt cho bước mã hóa vị trí 2D mà vẫn mang đặc trưng đủ mạnh. Resnet-18 biến đổi ảnh đầu vào (B, C, H, W) thành feature map (B, 256, H/16, W/16), khi mà số chiều không gian giảm nhưng chiều sâu các kênh tăng, giúp học được nhiều đặc trưng hơn.
+- **Bottleneck**: Sau khi có feature map với 256 kênh, ta tối ưu số kênh bằng cách thêm 1 lớp bottleneck tích chập, giảm xuống còn $d_{model}$=128 kênh, giúp giảm số tham số và độ phức tạp tính toán trong khi vẫn giữ được các thông tin không gian.
 - **2D positional encoding**: Ta cần mã hóa vị trí không gian 2 chiều bằng cách kết hợp mã hóa vị trí không gian cho chiều ngang và chiều dọc. Công thức được nhắc đến trong bài báo ["Attention Is All You Need"](https://arxiv.org/abs/1706.03762):
 	- $PE_(pos, 2i) = sin(\frac{pos}{10000^{\frac{2i}{d_{model}}}})$ 
 	- $PE_(pos, 2i+1) = cos(\frac{pos}{10000^{\frac{2i}{d_{model}}}})$ 
