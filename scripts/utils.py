@@ -9,6 +9,7 @@ from PIL import Image
 from torch.utils.data import Dataset
 from tqdm import tqdm
 
+# from scripts.data import Tokenizer, BaseDataset
 
 class TqdmUpTo(tqdm):
     """From https://github.com/tqdm/tqdm/blob/master/examples/tqdm_wget.py."""

@@ -5,7 +5,7 @@ import torch
 import torch.nn as nn
 from pytorch_lightning import LightningModule
 
-from scripts.utils import Tokenizer
+from scripts.data import Tokenizer
 from .resnet_transformer import ResNetTransformer
 from .metrics import CharacterErrorRate, ExactMatchScore, BLEUScore, EditDistance
 from config import VOCAB_FILE
